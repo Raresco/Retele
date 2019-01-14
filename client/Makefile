@@ -1,4 +1,6 @@
 
+#makefile client
+
 proiect: proiect.o
 	gcc -o proiect proiect.o -l sigil
 
