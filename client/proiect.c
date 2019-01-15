@@ -1,3 +1,5 @@
+///Client: ReversI
+
 #include "sl.h"
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -65,6 +67,7 @@ void initializeaza_tabla(const char *user1,const char *user2,int pat,int lem,int
 
 int main (int argc, char *argv[])
 {
+  int proba=0;
   int sd;  // descriptorul de socket
   int KEY=0;
   struct sockaddr_in server;	// structura folosita pentru conectare 
@@ -78,9 +81,7 @@ int main (int argc, char *argv[])
   const char* user1;
   const char* user2;
   int ok;
-  
-  
-  
+  slWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "ReversI", 0);
   
   
   /* exista toate argumentele in linia de comanda? */
@@ -109,8 +110,9 @@ int main (int argc, char *argv[])
     }
   char playerNo = -1;
   read(sd, &playerNo, 1);
-          //initializare window si background
-        slWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "ReversI", 0);
+
+	//initializare window si background
+       // slWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "ReversI", 0);
         slSetBackColor(0,0.5,0);
 
         //incarcare texturi
@@ -126,9 +128,10 @@ int main (int argc, char *argv[])
 
   while (!slShouldClose() && !slGetKey(SL_KEY_ESCAPE)){
   char tura = 0;
-  ok = 0;
+  ok=0;
   read(sd, &tura, 1);
   printf("Este tura cu numarul %d \n", tura);
+  
   for(int i = 0; i < 8; ++i){
           for( int j = 0; j < 8; ++j){
                 if(read(sd, &reversiTable[i][j], 1)<=0){
@@ -152,35 +155,41 @@ int main (int argc, char *argv[])
 	      }
 	}
 slRender();
-  if(tura % 2 == playerNo){
-          while(slGetMouseButton(SL_MOUSE_BUTTON_1)!=1){
-	  if(slGetMouseButton(SL_MOUSE_BUTTON_1!=0)){
-                        a = (slGetMouseX()-204)/INDICE;
-                        b = slGetMouseY()/INDICE;
-	
-  		  }
-	  }
 
-  char valid = -2;
+  if(tura % 2 == playerNo){
+  		
+	 
+  int input=0;
+  char valid = -1;
   do{
   //scanf("%d", &a);
   //scanf("%d", &b);
- 
- 		
-
+  char mouse = 0;
+  do{
+            mouse = slGetMouseButton(SL_MOUSE_BUTTON_1);   //doar test
+            printf("%d \n", mouse);
+	  		slCircleFill(400,400,300,200);
+                        a = (slGetMouseX()-204)/INDICE;
+                        b = slGetMouseY()/INDICE;
+  			input=1;
+            printf("%d %d \n", slGetMouseX(),slGetMouseY());
+  
+  }while(mouse == 0);
+if(input==1)
 if (write (sd, &a, 1) <= 0)
     {
       perror ("[client]Eroare la write() spre server.\n");
       return errno;
     }
-
+if(input==1)
   if (write (sd, &b, 1) <= 0)
 	  perror("[client");
-  read(sd, &valid, 1);
+    if(input==1)
+     read(sd, &valid, 1);
   printf("%d \n", valid);
   }
   while(valid == 0);
-  }
+  }  
    for(int i = 0; i < 8; ++i){
           for( int j = 0; j < 8; ++j){
                 if(read(sd, &reversiTable[i][j], 1)<=0){
@@ -193,7 +202,8 @@ if (write (sd, &a, 1) <= 0)
    }
 	for (int i = 0; i < 8; i = i + 1){
                 for (int j = 0; j < 8; j = j + 1){
-                       if (reversiTable[i][j] > 0){
+                       if (reversiTable[i][j] > 0){								///Chestia asta am incercat sa o pun intr-o functie si iesea ceva foarte ciudat,
+			       											//comenzi cu desene cu aceleasi coordonate desenau chestii unde nu trebuia.am pus-o aici si a mers.
                               slSetForeColor(reversiTable[i][j]-1,reversiTable[i][j]-1,reversiTable[i][j]-1,1);
                               slCircleFill(241 + j*INDICE,INDICE/2+4+(7-i)*INDICE,INDICE/2-3,280);
                               slSetForeColor((reversiTable[i][j]+1)%2,(reversiTable[i][j]+1)%2,(reversiTable[i][j]+1)%2,(reversiTable[i][j]+1)%2);
