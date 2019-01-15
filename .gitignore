@@ -1,3 +1,5 @@
 *.o
 client/proiect
 a.out
+*.swp
+teste/
