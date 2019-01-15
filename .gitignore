@@ -1,5 +1,7 @@
 *.o
 client/proiect
+server/server
 a.out
 *.swp
 teste/
+.vscode
