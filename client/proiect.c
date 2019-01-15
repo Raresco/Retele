@@ -31,9 +31,12 @@ int joaca_joc(struct Client *pclient, struct Grafica *pgrafica)
   int ok;
   int err;
   int asteapta_tura = 1;
-  err = citeste_tura(pclient);
-  if (err != 0)
-    return err;
+  do {
+    err = citeste_tura(pclient);
+    if (err == -1)
+      return err;
+  }
+  while (err == 1);
 
   initializeaza_tabla(pclient, pgrafica);
   afiseaza_tabla(pclient, pgrafica);
@@ -55,10 +58,12 @@ int joaca_joc(struct Client *pclient, struct Grafica *pgrafica)
     }
     if (asteapta_tura){
       err = citeste_tura(pclient);
-      if (err != 0)
+      if (err == -1)
         return err;
-      initializeaza_tabla(pclient, pgrafica);
-      afiseaza_tabla(pclient, pgrafica);
+      if (err == 0){
+        initializeaza_tabla(pclient, pgrafica);
+        afiseaza_tabla(pclient, pgrafica);
+      }
     }
     slRender();
   }

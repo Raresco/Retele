@@ -35,6 +35,8 @@ int connectare_la_server(struct Client *pclient, const char *addr, int port)
         perror("[client]Eroare la connect().\n");
         return errno;
     }
+    pclient->fds[0].fd = pclient->sd;
+    pclient->fds[0].events = POLLIN;
     pclient->user1 = "";
     pclient->user2 = "";
     return 0;
@@ -60,6 +62,11 @@ int este_randul_nostru(struct Client *pclient)
 
 int citeste_tura(struct Client *pclient)
 {
+    int err = poll(pclient->fds, 1, 0);
+    if (err == 0)
+        return 1;
+    if (err == -1)
+        return err;
     read(pclient->sd, &pclient->tura, 1);
     printf("Este tura cu numarul %d \n", pclient->tura);
     for (int i = 0; i < 8; ++i)

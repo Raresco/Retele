@@ -1,9 +1,11 @@
 #ifndef __CLIENT_H
 #define __CLIENT_H
+#include <poll.h>
 
 struct Client
 {
     int sd; // descriptorul de socket
+    struct pollfd fds[1];
     char player;
     const char *user1;
     const char *user2;
