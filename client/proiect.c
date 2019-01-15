@@ -26,35 +26,41 @@ int joaca_joc(struct Client *pclient, struct Grafica *pgrafica)
   int KEY = 0;
   char msg[100]; // mesajul trimis
   char a = -1, b = -1;
+  char valid;
   int i, j;
   int ok;
   int err;
+  int asteapta_tura = 1;
+  err = citeste_tura(pclient);
+  if (err != 0)
+    return err;
+
+  initializeaza_tabla(pclient, pgrafica);
+  afiseaza_tabla(pclient, pgrafica);
+  if (este_randul_nostru(pclient))
+    asteapta_tura = 0;
+  slRender();
 
   while (!slShouldClose() && !slGetKey(SL_KEY_ESCAPE))
   {
-    char valid;
-    ok = 0;
-    err = citeste_tura(pclient);
-    if (err != 0)
-      return err;
-    initializeaza_tabla(pclient, pgrafica);
-    afiseaza_tabla(pclient, pgrafica);
-    slRender();
-
-    if (este_randul_nostru(pclient))
+    if (!asteapta_tura && verifica_clic_mouse(pgrafica, &a, &b))
     {
-      do
-      {
-        asteapta_clic_mouse(pgrafica, &a, &b);
-        printf("Am citit a=%d b=%d\n", a, b);
-        err = valideaza_mutare(pclient, a, b, &valid);
-        if (err != 0)
-          return err;
-
-        //scanf("%d", &a);
-        //scanf("%d", &b);
-      } while (valid == 0);
+      printf("Am citit a=%d b=%d\n", a, b);
+      err = valideaza_mutare(pclient, a, b, &valid);
+      if (err != 0)
+        return err;
+      if (valid){
+        asteapta_tura = 1;
+      }
     }
+    if (asteapta_tura){
+      err = citeste_tura(pclient);
+      if (err != 0)
+        return err;
+      initializeaza_tabla(pclient, pgrafica);
+      afiseaza_tabla(pclient, pgrafica);
+    }
+    slRender();
   }
   return 0;
 }

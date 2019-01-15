@@ -20,5 +20,5 @@ void initializeaza_tabla(struct Client *client, struct Grafica *pgrafica);
 void initializeaza_grafica(struct Grafica *pgrafica);
 void inchide_grafica(struct Grafica *pgrafica);
 int afiseaza_tabla(struct Client *pclient, struct Grafica *pgrafica);
-void asteapta_clic_mouse(struct Grafica *pgrafica, char *a, char *b);
+int verifica_clic_mouse(struct Grafica *pgrafica, char *a, char *b);
 #endif

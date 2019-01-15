@@ -93,14 +93,13 @@ int afiseaza_tabla(struct Client *pclient, struct Grafica *pgrafica)
     }
 }
 
-void asteapta_clic_mouse(struct Grafica *pgrafica, char *a, char *b)
+int verifica_clic_mouse(struct Grafica *pgrafica, char *a, char *b)
 {
-    while (slGetMouseButton(SL_MOUSE_BUTTON_1) != 1)
+    if (slGetMouseButton(SL_MOUSE_BUTTON_1) != 0)
     {
-        if (slGetMouseButton(SL_MOUSE_BUTTON_1 != 0))
-        {
-            *a = (slGetMouseX() - 204) / INDICE;
-            *b = slGetMouseY() / INDICE;
-        }
+        *a = (slGetMouseX() - 204) / INDICE;
+        *b = slGetMouseY() / INDICE;
+        return 1;
     }
+    return 0;
 }
