@@ -30,41 +30,35 @@ int joaca_joc(struct Client *pclient, struct Grafica *pgrafica)
   int i, j;
   int ok;
   int err;
-  int asteapta_tura = 1;
-  do {
-    err = citeste_tura(pclient);
-    if (err == -1)
-      return err;
-  }
-  while (err == 1);
+  int randul_nostru = 0;
 
   initializeaza_tabla(pclient, pgrafica);
   afiseaza_tabla(pclient, pgrafica);
-  if (este_randul_nostru(pclient))
-    asteapta_tura = 0;
   slRender();
 
   while (!slShouldClose() && !slGetKey(SL_KEY_ESCAPE))
   {
-    if (!asteapta_tura && verifica_clic_mouse(pgrafica, &a, &b))
-    {
+    if (verifica_clic_mouse(pgrafica, &a, &b)) {
       printf("Am citit a=%d b=%d\n", a, b);
-      err = valideaza_mutare(pclient, a, b, &valid);
-      if (err != 0)
-        return err;
-      if (valid){
-        asteapta_tura = 1;
+      if (randul_nostru)
+      {
+        err = valideaza_mutare(pclient, a, b, &valid);
+        if (err != 0)
+          return err;
+        if (valid)
+          randul_nostru = 0;
       }
     }
-    if (asteapta_tura){
+    if (!randul_nostru){
       err = citeste_tura(pclient);
       if (err == -1)
         return err;
       if (err == 0){
-        initializeaza_tabla(pclient, pgrafica);
-        afiseaza_tabla(pclient, pgrafica);
+        randul_nostru = este_randul_nostru(pclient);
       }
     }
+    initializeaza_tabla(pclient, pgrafica);
+    afiseaza_tabla(pclient, pgrafica);
     slRender();
   }
   return 0;

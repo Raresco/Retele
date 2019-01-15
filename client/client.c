@@ -76,12 +76,13 @@ int citeste_tura(struct Client *pclient)
             if (read(pclient->sd, &pclient->reversiTable[i][j], 1) <= 0)
             {
                 perror("Nu s-a putut prealua tabla de joc.");
-                return errno;
+                return -1;
             }
             printf("%d ", pclient->reversiTable[i][j]);
         }
         printf("\n");
     }
+    printf("gata tura %d \n", pclient->tura);
     return 0;
 }
 

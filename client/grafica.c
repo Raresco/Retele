@@ -1,4 +1,5 @@
 #include <sl.h>
+#include <stdio.h>
 #include "grafica.h"
 
 void initializeaza_tabla(struct Client *client, struct Grafica *pgrafica)
@@ -7,6 +8,7 @@ void initializeaza_tabla(struct Client *client, struct Grafica *pgrafica)
     slSetForeColor(0.1, 0.7, 0.2, 1);
     slSetSpriteScroll(0, 0);
     slSprite(pgrafica->pattern, 500, 300, LATIME, LATIME);
+    
 
     //textura interfata
     slSetSpriteTiling(0.5, 0.5);
@@ -26,7 +28,6 @@ void initializeaza_tabla(struct Client *client, struct Grafica *pgrafica)
     slText(20, 565, client->user2);
     slRectangleOutline(101, 15, 200, 70);
     slRectangleOutline(101, 585, 200, 70);
-
     //deseneaza dinii
     for (int i = 204; i <= LUNGIME; i = i + INDICE)
     {
@@ -45,6 +46,7 @@ void initializeaza_tabla(struct Client *client, struct Grafica *pgrafica)
         slLine(204, i + 1, LUNGIME, i + 1);
         slLine(204, i - 1, LUNGIME, i - 1);
     }
+    
 }
 
 void initializeaza_grafica(struct Grafica *pgrafica)
@@ -80,7 +82,8 @@ int afiseaza_tabla(struct Client *pclient, struct Grafica *pgrafica)
                 slSetForeColor(
                     pclient->reversiTable[i][j] - 1,
                     pclient->reversiTable[i][j] - 1,
-                    pclient->reversiTable[i][j] - 1, 1);
+                    pclient->reversiTable[i][j] - 1,
+                    1);
                 slCircleFill(241 + j * INDICE, INDICE / 2 + 4 + (7 - i) * INDICE, INDICE / 2 - 3, 280);
                 slSetForeColor(
                     (pclient->reversiTable[i][j] + 1) % 2,
