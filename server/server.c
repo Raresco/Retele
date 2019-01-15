@@ -252,18 +252,18 @@ void cleanDescriptors(int clienti[2], int* clientiConectati){
 
 int sendMatrix(int clienti[2], char reversiTable[8][8]){
      for(int nr = 0; nr <= 1; ++nr)
-                    {
-                        for(int i = 0; i < 8; ++i)
-                            for(int j = 0; j < 8; ++j)
-                            {
-                                if( write(client[nr], &reversiTable[i][j],1)<=0)
-                                {
-                                    perror("[server]Eroare la transmiterea matricei.");
-                                    exit(4);
-                                    return errno;
-                                }
-                            }
-                    }
+					{
+							for(int i = 0; i < 8; ++i)
+									for(int j = 0; j < 8; ++j)
+									{
+											if( write(client[nr], &reversiTable[i][j],1)<=0)
+											{
+													perror("[server]Eroare la transmiterea matricei.");
+													exit(4);
+													return errno;
+											}
+									}
+					}
     return 1; 
 }
 
@@ -329,7 +329,7 @@ int main ()
                     sendMatrix(client, reversiTable);
                     getClientMove(client, reversiTable, contor);
                     contor++;
-                    sendMatrix(client, reversiTable);
+                    // sendMatrix(client, reversiTable);
 
                 }
             }
