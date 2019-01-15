@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define PORT 2077
+#define PORT 2078
 
 extern int errno;
 char reversiTable[8][8];
