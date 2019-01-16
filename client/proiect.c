@@ -15,6 +15,8 @@
 #include "client.h"
 #include "grafica.h"
 
+#define MAXUSERNAME 20
+
 /* codul de eroare returnat de anumite apeluri */
 extern int errno;
 /* portul de conectare la server*/
@@ -30,8 +32,7 @@ int joaca_joc(struct Client *pclient, struct Grafica *pgrafica)
   int i, j;
   int ok;
   int err;
-  int randul_nostru = 0;
-
+  int randul_nostru = 0; 
   initializeaza_tabla(pclient, pgrafica);
   afiseaza_tabla(pclient, pgrafica);
   slRender();
@@ -72,7 +73,8 @@ int main(int argc, char *argv[])
   struct Client client;
   struct Grafica grafica;
   int err;
-
+  char user1[MAXUSERNAME+1];
+  scanf("%s",user1);
   /* exista toate argumentele in linia de comanda? */
   if (argc != 3)
   {
@@ -85,7 +87,7 @@ int main(int argc, char *argv[])
     return err;
 
   //ne-am conectat, sa vedem care jucator suntem
-  citeste_jucator(&client);
+  citeste_jucator(&client,user1);
 
   initializeaza_grafica(&grafica);
   //avem jucatorul, hai sa jucam

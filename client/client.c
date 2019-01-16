@@ -37,21 +37,21 @@ int connectare_la_server(struct Client *pclient, const char *addr, int port)
     }
     pclient->fds[0].fd = pclient->sd;
     pclient->fds[0].events = POLLIN;
-    pclient->user1 = "";
-    pclient->user2 = "";
+    //pclient->user1 = "";
+    //pclient->user2 = "";
     return 0;
 }
 
-void citeste_jucator(struct Client *pclient)
+void citeste_jucator(struct Client *pclient,char user1)
 {
     read(pclient->sd, &pclient->player, 1);
     // error handling ???
     if (pclient->player == 0){
-        pclient->user1 = "eu";
-        pclient->user2 = "dusmanul";
+	strcpy(pclient->user1,user1);
+	pclient->user2 = "dusmanul";
     }else{
-        pclient->user2 = "eu";
-        pclient->user1 = "dusmanul";
+        strcpy(pclient->user2,user1);
+	pclient->user1 = "dusmanul";
     }
 }
 
