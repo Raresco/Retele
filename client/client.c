@@ -67,14 +67,14 @@ void ia_numele_adversarului(struct Client *pclient){
 
 void da_numele_serverului(struct Client *pclient){
     if( pclient->player == 0 ){
-        char lungime = strlen(pclient->user1) + 1;
+        char lungime = strlen(pclient->user1);
         write(pclient -> sd, &lungime, 1);
-        write(pclient->sd, pclient->user1, lungime);
+        write(pclient->sd, pclient->user1, lungime+1);
 }
     else{
-        char lungime = strlen(pclient->user2) + 2;
+        char lungime = strlen(pclient->user2);
         write(pclient->sd, &lungime, 1);
-        write(pclient->sd, pclient->user2, lungime);
+        write(pclient->sd, pclient->user2, lungime+1);
     }
 }
 

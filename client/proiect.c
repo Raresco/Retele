@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
 
   //ne-am conectat, sa vedem care jucator suntem
   citeste_jucator(&client);
- // da_numele_serverului(&client);
- // ia_numele_adversarului(&client);
+  da_numele_serverului(&client);
+  ia_numele_adversarului(&client);
   
 
   printf("%s %s\n", client.user1, client.user2);

@@ -512,21 +512,20 @@ void updateTurn(int client[2], char contor){
 }
 void getUsernames(int client[2], char* usernames[2]){
      
-    char lungime = 0;
+    char lungime;
     for(int i = 0; i <= 1; ++i){
-        read(client[i], &lungime, 1);
-        usernames[i] = (char*)malloc(lungime + 1);
-        read(client[i], usernames[i], (lungime + 1));
-        lungime = 0;
+			lungime = 0;
+			read(client[i], &lungime, 1);
+			usernames[i] = (char *)malloc(lungime + 1);
+			read(client[i], usernames[i], (lungime + 1));
     }
 }
 void sendOpponentUsername(int client[2], char* usernames[2]){
     char lungime;
     for(int i = 0; i <= 1; ++i){
-        lungime = strlen(usernames[(i + 1) % 2]) + 1;
+        lungime = strlen(usernames[(i + 1) % 2]);
         write(client[i], &lungime, 1);
-        write(client[i], usernames[(i + 1) % 2], lungime);
-
+        write(client[i], usernames[(i + 1) % 2], lungime+1);
     }
 }
 int main ()
