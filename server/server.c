@@ -14,6 +14,7 @@
 struct gameState{
     char playerPoints[2];
     char possibleMove;
+    char winner;
 };
 
 
@@ -26,7 +27,6 @@ int client[2];
 sockaddr_in server;
 sockaddr_in from;
 int sd;
-gameState currentGS;
 
 
 char rightNeighbour(char reversiTable[8][8], char playerNo, char xCoordinate, char yCoordinate){
@@ -335,34 +335,7 @@ char validMove(char xCoordinate, char yCoordinate,char playerNo, char reversiTab
             reversiTable[xCoordinate][yCoordinate] = playerNo + 1;
             return reverse;
         }
-	/*
-    if(yCoordinate!=7)
-    {
-        char auxReverse = 0;
-        if((reversiTable[xCoordinate][yCoordinate+1] != (playerNo+1)) && (reversiTable[xCoordinate][yCoordinate+1]!=0))
-            for(int k = 7; k >= yCoordinate; --k)
-            {
-                if(reversiTable[xCoordinate][k] == (playerNo +1))
-                    auxReverse = reverse = 1;
-                if(auxReverse == 1)
-                    reversiTable[xCoordinate][k] = playerNo +1;
-            }
-    }
-	*/
-     /*if(yCoordinate!=0)
-    {
-        char auxReverse = 0;
-        if((reversiTable[xCoordinate][yCoordinate-1] != (playerNo+1)) && (reversiTable[xCoordinate][yCoordinate-1]!=0))
-		    tempX = upperNeighbour(reversiTable, playerNo, xCoordinate, yCoordinate);
-            for(int k = 0; k <= yCoordinate; ++k)
-            {
-                if(reversiTable[xCoordinate][k] == (playerNo +1))
-                    auxReverse =	reverse = 1;
-                if(auxReverse == 1)
-                    reversiTable[xCoordinate][k] = playerNo +1;
-            }
-    }
-	*/
+	
     char tempY = leftNeighbour(reversiTable, playerNo, xCoordinate, yCoordinate);
 	if(tempY != -1){
 		for(int j = tempY; j <= yCoordinate ; ++j)
@@ -423,146 +396,7 @@ char validMove(char xCoordinate, char yCoordinate,char playerNo, char reversiTab
 	reverse = 1;
 	}
 	free(temporaryCoordinates);	 
-	/*	
-    
-    /*if(xCoordinate!=0)
-    {
-        char auxReverse = 0;
-        if((reversiTable[xCoordinate-1][yCoordinate] != (playerNo+1)) && (reversiTable[xCoordinate-1][yCoordinate]!=0))
-            for(int k = 0; k <= xCoordinate; ++k)
-            {
-                if(reversiTable[k][yCoordinate] == (playerNo + 1))
-                    auxReverse = reverse = 1;
-                if(auxReverse == 1)
-                    reversiTable[k][yCoordinate] = playerNo + 1;
-            }
-    } */
-
-   /* if(xCoordinate!=7)
-    {
-        char auxReverse = 0;
-        if((reversiTable[xCoordinate+1][yCoordinate] != (playerNo+1)) && (reversiTable[xCoordinate+1][yCoordinate]!=0))
-            for(int k = 7; k >= xCoordinate; --k)
-            {
-                if(reversiTable[k][yCoordinate] == (playerNo + 1))
-                    auxReverse = reverse = 1;
-                if(auxReverse == 1)
-                    reversiTable[k][yCoordinate] = playerNo + 1;
-            }
-    }
-    if((xCoordinate !=0) && (yCoordinate !=7))
-    {
-        char auxReverse = 0;
-        char tempX, tempY;
-        if((reversiTable[xCoordinate-1][yCoordinate+1] != (playerNo+1)) && (reversiTable[xCoordinate-1][yCoordinate+1]!=0))
-        {
-            if(( xCoordinate + yCoordinate  ) <=7)
-            {
-                tempX = 0;
-                tempY = xCoordinate + yCoordinate;
-            }
-            else
-            {
-                tempX = yCoordinate - 1;
-                tempY = (xCoordinate + yCoordinate) - 7;
-            }
-            printf("%d %d \n", tempX, tempY);
-            for(char i = tempX, j = tempY; i <= xCoordinate && j >= yCoordinate; i++, j--)
-            {
-                printf("%d %d \n",i,j);
-                if(reversiTable[i][j] == (playerNo + 1))
-                    auxReverse = reverse = 1;
-                if(auxReverse == 1)
-                    reversiTable[i][j] = playerNo + 1;
-            }
-        }
-    }
-    if((xCoordinate != 7) && (yCoordinate != 0))
-    {
-        char auxReverse = 0;
-        char tempX, tempY;
-        if((reversiTable[xCoordinate+1][yCoordinate-1]!= (playerNo + 1)) && (reversiTable[xCoordinate+1][yCoordinate-1]!=0))
-        {
-            if((xCoordinate + yCoordinate) <= 7)
-            {
-                tempX = xCoordinate + yCoordinate;
-                tempY = 0;
-            }
-            else
-            {
-                tempX = (xCoordinate + yCoordinate) - 7;
-                tempY = xCoordinate + 1;
-            }
-            printf("%d %d \n", tempX, tempY);
-            for( char i = tempX, j = tempY; i >= xCoordinate && j <= yCoordinate; i--, j++)
-            {
-                if(reversiTable[i][j] == (playerNo + 1))
-                    auxReverse = reverse = 1;
-                if(auxReverse == 1)
-                    reversiTable[i][j] = playerNo + 1;
-            }
-
-        }
-    }
-    if((xCoordinate != 0) && (yCoordinate !=0))
-    {
-        char auxReverse = 0;
-        char tempX, tempY;
-        if((reversiTable[xCoordinate - 1][yCoordinate - 1] != (playerNo + 1)) && (reversiTable[xCoordinate - 1][yCoordinate - 1] != 0))
-        {
-            if(xCoordinate < yCoordinate)
-            {
-                tempX = xCoordinate - yCoordinate;
-                tempY = 0;
-            }
-            else
-            {
-                tempX = 0;
-                tempY = yCoordinate - xCoordinate;
-            }
-            for(char i = tempX, j = tempY; i <= xCoordinate, j <= yCoordinate; i++, j++)
-            {
-                if(reversiTable[i][j] == (playerNo + 1))
-                {
-                    auxReverse = reverse = 1;
-                    printf("merge stanga sus \n");
-                }
-                if(auxReverse == 1)
-                    reversiTable[i][j] = playerNo + 1;
-            }
-        }
-    }
-    if((xCoordinate !=7)&&(yCoordinate !=7))
-    {
-        char auxReverse = 0;
-        char tempX, tempY;
-        if((reversiTable[xCoordinate +1 ][yCoordinate + 1] != (playerNo + 1)) && (reversiTable[xCoordinate + 1][yCoordinate + 1] != 0))
-        {
-            if(xCoordinate <= yCoordinate)
-            {
-                tempX = 7 -(yCoordinate - xCoordinate);
-                tempY = 7;
-            }
-            else
-            {
-                tempX = 7;
-                tempY = 7 - (xCoordinate - yCoordinate);
-            }
-            printf("%d %d \n", tempX, tempY);
-
-            for(char i = tempX, j = tempY; i >= xCoordinate, j >= yCoordinate; i--, j--)
-            {
-                if(reversiTable[i][j] == (playerNo + 1))
-                {
-                    auxReverse = reverse = 1;
-                    printf("merge stanga jos \n");
-                }
-                if(auxReverse == 1)
-                    reversiTable[i][j] = playerNo + 1;
-            }
-        }
-
-    } */
+	
 
     return reverse;
 }
@@ -620,41 +454,86 @@ int sendMatrix(int clienti[2], char reversiTable[8][8]){
     return 1; 
 }
 
-void getClientMove(int client[2], char reversiTable[8][8], char* contor){
+void getClientMove(int client[2], char reversiTable[8][8], char* contor, gameState* currentGS){
     char xCoordinate = 0;
     char yCoordinate = 0;
     char valid = 0;
-    do
-        {
-             if (read (client[(*contor)%2], &xCoordinate, 1) <= 0)
+    if(doesMoveExist(reversiTable, *contor, currentGS)){
+        do
+            {
+                if (read (client[(*contor)%2], &xCoordinate, 1) <= 0)
+                    {
+                //     perror ("[server]Eroare la read() de la client.\n");
+                    continue;
+                    }
+                if(read(client[(*contor)%2], &yCoordinate, 1) <= 0)
                 {
-              //     perror ("[server]Eroare la read() de la client.\n");
-                   continue;
+                //     perror("[server]Eroare la read() de la client. \n");
+                    continue;
                 }
-             if(read(client[(*contor)%2], &yCoordinate, 1) <= 0)
-               {
-             //     perror("[server]Eroare la read() de la client. \n");
-                  continue;
-               }
-                valid = validMove(xCoordinate,yCoordinate,(*contor)%2, reversiTable, *contor);
-                printf("%d \n", valid);
-                write(client[(*contor)%2], &valid, 1);
-        }while(!valid);
-        (*contor)++;
+                    valid = validMove(xCoordinate,yCoordinate,(*contor)%2, reversiTable, *contor);
+                    printf("%d \n", valid);
+                    write(client[(*contor)%2], &valid, 1);
+            }while(!valid);
+            (*contor)++;
+    }
+    else{
+        if(currentGS->playerPoints[0] > currentGS->playerPoints[1])
+            currentGS->winner = 0;
+        else if(currentGS->playerPoints[1] > currentGS->playerPoints[0])
+            currentGS->winner = 1;
+        else currentGS->winner = 2;
+    }
+
+}
+
+void initializeGame(gameState* GS){
+    GS->winner = -1;
+    GS->playerPoints[0] = 0;
+    GS->playerPoints[1] = 0;
+    GS->possibleMove = 1;
+}
+
+void sendScores(gameState* GS, int client[2]){
+
+        for(int i = 0; i <= 1; ++i)
+            for(int j = 0; j <=1; ++j)
+                write(client[i], &(GS->playerPoints[j]), 1);
+
 }
 
 void sendPlayerNumber(int client[2]){
     for(int i = 0; i < 2; ++i)
-                    write(client[i], &i, 1);
+        write(client[i], &i, 1);
 }
 void updateTurn(int client[2], char contor){
     for(int i = 0; i < 2; ++i)
-                        write(client[i], &contor, 1);
+        write(client[i], &contor, 1);
+}
+void getUsernames(int client[2], char* usernames[2]){
+     
+    char lungime = 0;
+    for(int i = 0; i <= 1; ++i){
+        read(client[i], &lungime, 1);
+        usernames[i] = (char*)malloc(lungime + 1);
+        read(client[i], usernames[i], (lungime + 1));
+        lungime = 0;
+    }
+}
+void sendOpponentUsername(int client[2], char* usernames[2]){
+    char lungime;
+    for(int i = 0; i <= 1; ++i){
+        lungime = strlen(usernames[(i + 1) % 2]) + 1;
+        write(client[i], &lungime, 1);
+        write(client[i], usernames[(i + 1) % 2], lungime);
+
+    }
 }
 int main ()
 {
     deployServer(&server, &from, &sd);   
     int clientiConectati = 0;
+    char* usernames[2];
     while (1)
     {
         int pid = -1;
@@ -669,7 +548,10 @@ int main ()
             continue;
         }
         if(clientiConectati == 2)
-        {
+        {   
+            gameState currentGS;
+            initializeGame(&currentGS);
+
             if( (pid = fork()) == -1)
             {
                 perror("[server]Nu s-a putut creea camera de joc.\n");
@@ -680,11 +562,14 @@ int main ()
             {
                 char contor = 0;
                 sendPlayerNumber(client);
+                getUsernames(client, usernames);
+                sendOpponentUsername(client, usernames);
                 while(1)
                 {
                     updateTurn(client, contor);
                     sendMatrix(client, reversiTable);
-                    getClientMove(client, reversiTable, &contor);
+              //      sendScores(&currentGS, client);
+                    getClientMove(client, reversiTable, &contor, &currentGS);
                  //   sendMatrix(client, reversiTable);
 
                 }

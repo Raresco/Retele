@@ -42,16 +42,39 @@ int connectare_la_server(struct Client *pclient, const char *addr, int port)
     return 0;
 }
 
-void citeste_jucator(struct Client *pclient,char user1)
+void citeste_jucator(struct Client *pclient)
 {
     read(pclient->sd, &pclient->player, 1);
     // error handling ???
-    if (pclient->player == 0){
-	strcpy(pclient->user1,user1);
-	pclient->user2 = "dusmanul";
+    if (pclient->player == 0){    
+	scanf("%s",pclient->user1);
+	strcpy(pclient->user2,"dusmanul");
     }else{
-        strcpy(pclient->user2,user1);
-	pclient->user1 = "dusmanul";
+	scanf("%s",pclient->user2);
+    	strcpy(pclient->user1,"dusmanul");
+    }
+}
+
+void ia_numele_adversarului(struct Client *pclient){
+    char lungime = 0;
+    read(pclient -> sd, &lungime, 1);
+    if( pclient -> player == 0){
+        read(pclient -> sd, pclient -> user2, (lungime + 1));
+    }
+    else 
+        read(pclient -> sd, pclient -> user1, (lungime + 1));
+}
+
+void da_numele_serverului(struct Client *pclient){
+    if( pclient->player == 0 ){
+        char lungime = strlen(pclient->user1) + 1;
+        write(pclient -> sd, &lungime, 1);
+        write(pclient->sd, pclient->user1, lungime);
+}
+    else{
+        char lungime = strlen(pclient->user2) + 2;
+        write(pclient->sd, &lungime, 1);
+        write(pclient->sd, pclient->user2, lungime);
     }
 }
 
