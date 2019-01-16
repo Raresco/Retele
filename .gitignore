@@ -1,5 +1,6 @@
 *.o
 client/proiect
+client/client
 server/server
 a.out
 *.swp
