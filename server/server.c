@@ -577,7 +577,7 @@ int main ()
                     updateTurn(client, contor);
                     sendMatrix(client, reversiTable);
                     getClientMove(client, reversiTable, &contor, &currentGS);
-                    
+                    sendMatchResult(client, currentGS);                    
                    // if(currentGS.winner != - 1)
                  //   sendMatrix(client, reversiTable);
 
