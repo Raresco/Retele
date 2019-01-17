@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define PORT 2115
+
+#define PORT 2116
 
 
 struct gameState{
@@ -406,8 +407,7 @@ char validMove(char xCoordinate, char yCoordinate,char playerNo, char reversiTab
 int deployServer(sockaddr_in* server, sockaddr_in* from, int* sd){
     if ((*sd = socket (AF_INET, SOCK_STREAM, 0)) == -1)
     {
-        perror ("[server]Eroare la socket().\n");
-        exit(3);
+        perror ("Eroare la socket().\n");
         return errno;
     }
 
@@ -420,15 +420,13 @@ int deployServer(sockaddr_in* server, sockaddr_in* from, int* sd){
 
     if (bind (*sd, (struct sockaddr *) server, sizeof (struct sockaddr)) == -1)
     {
-        perror ("[server]Eroare la bind().\n");
-        exit(1);
+        perror ("Eroare la bind().\n");
         return errno;
     }
 
     if (listen (*sd, 50) == -1)
     {
-        perror ("[server]Eroare la listen().\n");
-        exit(2);
+        perror ("Eroare la listen().\n");
         return errno;
     }
 }
@@ -447,8 +445,7 @@ int sendMatrix(int clienti[2], char reversiTable[8][8]){
                             {
                                 if( write(client[nr], &reversiTable[i][j],1)<=0)
                                 {
-                                    perror("[server]Eroare la transmiterea matricei.");
-                                    exit(4);
+                                    perror("Eroare la transmiterea matricei.");
                                     return errno;
                                 }
                             }
@@ -545,11 +542,11 @@ int main ()
     {
         int pid = -1;
         int length = sizeof(from);
-        printf ("[server]Asteptam la portul %d...\n",PORT);
+        printf ("Asteptam la portul %d...\n",PORT);
         fflush (stdout);
         if((client[clientiConectati++] = accept (sd, (struct sockaddr *) &from, &length)) <= 0)
         {
-            perror("[server]Eroare la conectare.\n");
+            perror("Eroare la conectare.\n");
             
             clientiConectati = (clientiConectati + 1) % 2;
             continue;
@@ -561,7 +558,7 @@ int main ()
 
             if( (pid = fork()) == -1)
             {
-                perror("[server]Nu s-a putut creea camera de joc.\n");
+                perror("Nu s-a putut creea camera de joc.\n");
                 cleanDescriptors(client, &clientiConectati);
                 continue;
             }
@@ -577,7 +574,7 @@ int main ()
                     updateTurn(client, contor);
                     sendMatrix(client, reversiTable);
                     getClientMove(client, reversiTable, &contor, &currentGS);
-                    sendMatchResult(client, currentGS);                    
+                 //   sendMatchResult(client, currentGS);                    
                    // if(currentGS.winner != - 1)
                  //   sendMatrix(client, reversiTable);
 

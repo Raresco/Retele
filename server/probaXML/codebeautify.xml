@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<users>
+	<user>
+		<username>Alex</username>
+		<parola>pula</parola>
+		<castiguri>0</castiguri>
+	</user>
+	<user>
+		<username>Rares</username>
+		<parola>pula</parola>
+		<castiguri>0</castiguri>
+	</user>
+</users>
