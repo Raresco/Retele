@@ -54,7 +54,12 @@ void citeste_jucator(struct Client *pclient)
     	strcpy(pclient->user1,"dusmanul");
     }
 }
-
+void preia_scor(struct Client *pclient){
+    
+    for(int i = 0; i <=1; ++i)
+        read(pclient->sd, &(pclient->puncte[i]), 1);
+    
+}
 void ia_numele_adversarului(struct Client *pclient){
     char lungime = 0;
     read(pclient -> sd, &lungime, 1);
@@ -90,6 +95,7 @@ int citeste_tura(struct Client *pclient)
         return 1;
     if (err == -1)
         return err;
+    preia_scor(pclient);
     read(pclient->sd, &pclient->tura, 1);
     printf("Este tura cu numarul %d \n", pclient->tura);
     for (int i = 0; i < 8; ++i)
@@ -105,7 +111,9 @@ int citeste_tura(struct Client *pclient)
         }
         printf("\n");
     }
+    
     printf("gata tura %d \n", pclient->tura);
+    printf("Scor: %d %d \n", pclient->puncte[0], pclient->puncte[1]);
     return 0;
 }
 

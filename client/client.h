@@ -11,6 +11,8 @@ struct Client
     char user2[MAX_USERNAME+1];
     char reversiTable[8][8];
     char tura;
+    char puncte[2];
+    char castigator;
 };
 
 void inchide_client(struct Client *pclient);
@@ -21,4 +23,5 @@ int este_randul_nostru(struct Client *pclient);
 int citeste_tura(struct Client *pclient);
 void ia_numele_adversarului(struct Client *pclient);
 void da_numele_serverului(struct Client *pclient);
+void preia_scor(struct Client *pclient);
 #endif

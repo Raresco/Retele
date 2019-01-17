@@ -3,6 +3,8 @@
 #include "grafica.h"
 #include <string.h>
 #include <stdlib.h>
+#include "client.h"
+
 void initializeaza_tabla(struct Client *client, struct Grafica *pgrafica)
 {
     //textura tabla
@@ -40,18 +42,18 @@ void initializeaza_tabla(struct Client *client, struct Grafica *pgrafica)
     //deseneaza linii
     for (int i = 204; i <= LUNGIME; i = i + INDICE)
     {
-        slSetForeColor(1, 1, 1, 1);
+        slSetForeColor(0, 0, 0, 1);
         slLine(i, 4, i, LATIME);
-        slSetForeColor(0.9, 0.9, 0.9, 0.8);
+        slSetForeColor(0.1, 0.1, 0.1, 0.8);
         slLine(i + 1, 4, i + 1, LATIME);
         slLine(i - 1, 4, i - 1, LATIME);
     }
 
     for (int i = 4; i <= LATIME; i = i + INDICE)
     {
-        slSetForeColor(1, 1, 1, 1);
+        slSetForeColor(0, 0, 0, 1);
         slLine(204, i, LUNGIME, i);
-        slSetForeColor(0.9, 0.9, 0.9, 0.8);
+        slSetForeColor(0.1, 0.1, 0.1, 0.8);
         slLine(204, i + 1, LUNGIME, i + 1);
         slLine(204, i - 1, LUNGIME, i - 1);
     }
@@ -98,16 +100,21 @@ int afiseaza_tabla(struct Client *pclient, struct Grafica *pgrafica)
         {
             if (pclient->reversiTable[i][j] > 0)
             {
-	      			
-		 slSetForeColor(0,0,0,1);
+	      			slSetForeColor(0,0.8,0,1);
+                if ((pclient->tura)%2==0)
+                    slCircleFill(40,90,10,60);
+                else
+                    slCircleFill(40,510,10,60);
+
+		 slSetForeColor(0.1,0.1,0.1,1);
 		 slCircleOutline(40,510,20,60);
 		 slCircleFill(40,90,20,60);
-        	 slText(70, 85, p1);
+         slText(70, 85, p1);
 
-		 slSetForeColor(1,1,1,1);
+		 slSetForeColor(0.9,0.9,0.9,1);
 		 slCircleOutline(40,90,20,60);
-                 slCircleFill(40,510,20,60);
-	         slText(70, 505, p2);
+         slCircleFill(40,510,20,60);
+	     slText(70, 505, p2);
 
 		
 		 slSetForeColor(

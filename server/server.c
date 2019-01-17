@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define PORT 2114
+#define PORT 2115
 
 
 struct gameState{
@@ -249,20 +249,20 @@ char* rightLower(char reversiTable[8][8], char playerNo, char xCoordinate, char 
 }
 char doesMoveExist(char reversiTable[8][8], char tura, gameState* currentGS){
 
-    if( tura <= 3){
-        for(int i = 3; i <= 4; ++i){
-            for(int j = 3; j<= 4; ++j)
-                if(reversiTable[i][j] == ((tura % 2) + 1))
-                    (currentGS->playerPoints[tura % 2])++;
-        }
-        return 1;
-    }
-    char exists = -1;
-
+  //  currentGS->playerPoints[0] = 0;
+   // currentGS->playerPoints[1] = 0;
+    char exists = 0;
+    int x = 0, y = 0;
     for(int i = 0; i <= 7; ++i){
         for( int j = 0; j<= 7; ++j){
-            if(reversiTable[i][j]==((tura % 2) + 1))
-                (currentGS->playerPoints[tura % 2])++;
+            if(tura <= 3)
+                exists = 1;
+            if(reversiTable[i][j]== 1)
+              //  currentGS->playerPoints[0]++;
+                  x++;
+            else if(reversiTable[i][j] == 2)
+              //    currentGS->playerPoints[1]++;
+                  y++;
 			if(!exists){
 				if(lowerNeighbour(reversiTable, (tura % 2), i, j)){
 					exists = 1;
@@ -302,8 +302,10 @@ char doesMoveExist(char reversiTable[8][8], char tura, gameState* currentGS){
 	}
 	if(!exists)
 		currentGS->possibleMove = 0;
-	
-	return 1;
+	currentGS->playerPoints[0] = x;
+    currentGS->playerPoints[1] = y;
+ //   printf("%d %d \n", x, y);
+	return exists;
 }
 
 
@@ -528,6 +530,12 @@ void sendOpponentUsername(int client[2], char* usernames[2]){
         write(client[i], usernames[(i + 1) % 2], lungime+1);
     }
 }
+void sendMatchResult(int client[2], gameState currentGS){
+    if(currentGS.winner != -1){
+        for(int i = 0; i <= 1; ++i)
+            write(client[i], &(currentGS.winner), 1);
+    }
+}
 int main ()
 {
     deployServer(&server, &from, &sd);   
@@ -565,10 +573,12 @@ int main ()
                 sendOpponentUsername(client, usernames);
                 while(1)
                 {
+                    sendScores(&currentGS, client);
                     updateTurn(client, contor);
                     sendMatrix(client, reversiTable);
-              //      sendScores(&currentGS, client);
                     getClientMove(client, reversiTable, &contor, &currentGS);
+                    
+                   // if(currentGS.winner != - 1)
                  //   sendMatrix(client, reversiTable);
 
                 }
